@@ -1,8 +1,8 @@
 # Market Lens
 
-An automated skill that audits your codebase for market-specific cultural, UX, and product issues. Goes beyond localization into payments, trust signals, identity verification, communication patterns, compliance, and more.
+An automated skill that audits your codebase for market-specific cultural, UX, and product issues. Built from 4+ years of building products in Brazil (fraud prevention, real estate technology, ML-powered content moderation) and hard-won lessons about what breaks when you ship Western defaults into emerging markets. Goes beyond localization into payments, trust signals, identity verification, communication patterns, compliance, and more.
 
-Currently supports **Brazil**.
+Currently supports **Brazil**. By [Farhan Khalaf](https://linkedin.com/in/farhankhalaf).
 
 ## What It Checks
 
@@ -69,6 +69,3 @@ market-lens/
 - Additional markets (Arabic-speaking, India, Japan)
 - Web app version (paste a URL, pick a market, get a report)
 
-## About
-
-Built by [Farhan Khalaf](https://linkedin.com/in/farhankhalaf). Based on 4+ years building products in Brazil (fraud prevention, real estate technology, ML-powered content moderation) and hard-won lessons about what breaks when you ship Western defaults into emerging markets.
