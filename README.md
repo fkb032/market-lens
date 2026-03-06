@@ -1,0 +1,78 @@
+# Market Lens
+
+A Claude Code skill that audits your codebase for market-specific cultural, UX, and product issues. Goes beyond localization into payments, trust signals, identity verification, communication patterns, compliance, and more.
+
+Currently supports **Brazil**.
+
+## What It Checks
+
+Market Lens scans your actual codebase (templates, components, payment integrations, forms, validators, i18n files, copy, CSS, config) and produces a scored report. Every finding has a file path, line number, and specific fix recommendation.
+
+**15 audit categories for Brazil:**
+
+| Category | Example Checks |
+|----------|---------------|
+| Payments | Pix, credit card installments (parcelamento), boleto, Pix discount |
+| Payment Infrastructure | Brazilian gateway (Pagarme, Stone, Mercado Pago), anti-fraud, chargebacks |
+| Trust Signals | CNPJ in footer, Reclame Aqui reference, nota fiscal integration |
+| Identity and CPF | CPF field at checkout, mod-11 checksum validation, third-party verification |
+| Communication | WhatsApp contact, WhatsApp support channel, platform leakage strategy |
+| Copy and Tone | Brazilian Portuguese (not European PT or Spanish), warm informal tone |
+| Legal and LGPD | Cookie consent (granular), account deletion, data portability, DPO contact |
+| Currency and Formatting | R$ formatting, comma as decimal separator, DD/MM/YYYY dates |
+| Social and Cultural | WhatsApp sharing, Brazilian holiday calendar, Southern Hemisphere seasons |
+| Forms and Data | CEP auto-fill, complemento field, Brazilian phone format, name conventions |
+| Localization | pt-BR locale, hreflang tags, Portuguese error/404/empty states |
+| Low-Bandwidth Resilience | JS bundle size, image optimization, CDN, offline handling, Save-Data header |
+| SMS and Verification | SMS OTP, phone-as-identifier, Brazilian carrier support |
+| Social Login | Facebook/Instagram OAuth, social account age as trust signal |
+| Identity Exposure | Optional profile photos, public name display, block functionality |
+
+**Two scores:**
+- **Main Score** (X/100): Overall Brazil market readiness
+- **Low-Bandwidth Score** (X/100): How well the product works on weak 3G connections and budget Android devices
+
+## Install
+
+Copy the `market-lens/skill/` folder into your Claude Code skills directory:
+
+```bash
+# Option A: Add to a specific project
+mkdir -p your-project/.claude/skills/market-lens
+cp market-lens/skill/SKILL.md your-project/.claude/skills/market-lens/
+
+# Option B: Add to PM OS (if you use it)
+cp -r market-lens/skill/ /path/to/PM-OS/.claude/skills/market-lens/
+```
+
+## Usage
+
+Open Claude Code in your project directory and run:
+
+```
+/market-lens brazil
+```
+
+The skill scans your codebase and produces a report saved to `outputs/market-lens/audit-brazil-[date].md`.
+
+## Example Output
+
+See [example-output.md](market-lens/skill/example-output.md) for a full sample audit report against a fictional e-commerce codebase.
+
+## Repo Structure
+
+```
+market-lens/
+  skill/
+    SKILL.md           # Claude Code skill definition
+    example-output.md  # Sample audit report
+```
+
+## Coming Soon
+
+- Additional markets (Arabic-speaking, India, Japan)
+- Web app version (paste a URL, pick a market, get a report)
+
+## About
+
+Built by [Farhan Khalaf](https://linkedin.com/in/farhankhalaf). Based on 4+ years building products in Brazil (fraud prevention, real estate technology, ML-powered content moderation) and hard-won lessons about what breaks when you ship Western defaults into emerging markets.
