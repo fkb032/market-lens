@@ -1,6 +1,6 @@
 # Market Lens
 
-A Claude Code skill that audits your codebase for market-specific cultural, UX, and product issues. Goes beyond localization into payments, trust signals, identity verification, communication patterns, compliance, and more.
+An automated skill that audits your codebase for market-specific cultural, UX, and product issues. Goes beyond localization into payments, trust signals, identity verification, communication patterns, compliance, and more.
 
 Currently supports **Brazil**.
 
@@ -34,20 +34,16 @@ Market Lens scans your actual codebase (templates, components, payment integrati
 
 ## Install
 
-Copy the `market-lens/skill/` folder into your Claude Code skills directory:
+Copy the skill folder into your project's `.claude/skills/` directory:
 
 ```bash
-# Option A: Add to a specific project
 mkdir -p your-project/.claude/skills/market-lens
 cp market-lens/skill/SKILL.md your-project/.claude/skills/market-lens/
-
-# Option B: Add to PM OS (if you use it)
-cp -r market-lens/skill/ /path/to/PM-OS/.claude/skills/market-lens/
 ```
 
 ## Usage
 
-Open Claude Code in your project directory and run:
+Open your AI coding assistant in the project directory and run:
 
 ```
 /market-lens brazil
@@ -64,7 +60,7 @@ See [example-output.md](market-lens/skill/example-output.md) for a full sample a
 ```
 market-lens/
   skill/
-    SKILL.md           # Claude Code skill definition
+    SKILL.md           # Skill definition
     example-output.md  # Sample audit report
 ```
 
