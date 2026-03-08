@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 const MARKETS_DIR = "markets";
-const SKILL_PATH = "code-passport/skill/SKILL.md";
+const SKILL_PATH = ".claude/skills/code-passport/SKILL.md";
 
 function isChecklistFormat(content) {
   // Checklist format has tables with "Check | How to Verify | Severity"

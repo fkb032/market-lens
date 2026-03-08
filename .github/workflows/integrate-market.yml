@@ -68,7 +68,7 @@ jobs:
           A new market knowledge file was merged into \`markets/\`. This PR:
 
           1. Converted narrative knowledge to structured checklist format (via Claude API)
-          2. Updated the supported markets list in \`code-passport/skill/SKILL.md\`
+          2. Updated the supported markets list in \`.claude/skills/code-passport/SKILL.md\`
 
           **Markets:** ${MARKETS}
           **Original contributor:** @${CONTRIBUTOR}

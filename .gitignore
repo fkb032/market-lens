@@ -1,2 +1,4 @@
 .DS_Store
 .local-only/
+node_modules/
+dist/

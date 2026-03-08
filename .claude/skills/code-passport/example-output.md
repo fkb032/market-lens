@@ -110,9 +110,6 @@
 
 ## Passing Checks
 
-**Currency and Formatting:**
-- WhatsApp icon present for customer contact - `src/components/ui/Icons.tsx:45` (icon exists but is not used in layout, see Warning #5)
-
 **Trust Signals:**
 - Physical address visible - `src/components/layout/Footer.tsx:38`
 - Phone number visible - `src/components/layout/Footer.tsx:41`
@@ -122,9 +119,6 @@
 **Identity and CPF:**
 - CPF in signup flow - `src/components/auth/SignupForm.tsx:56`
 
-**Payments:**
-- Pix discount displayed - N/A (no Pix integration, see Critical #1)
-
 **Communication and WhatsApp:**
 - WhatsApp as support channel - `src/pages/support.tsx:22` (WhatsApp listed in support page text, but no clickable link)
 
@@ -132,103 +126,64 @@
 - Copy is in Brazilian Portuguese - `src/i18n/pt.json` (pt-BR locale file present)
 - Not Spanish - no Spanish language strings detected
 - Tone is warm and informal - copy uses "voce", conversational style, appropriate warmth
-- Error messages are helpful - `src/i18n/pt.json:300-340` (validation messages in clear Portuguese: "CPF invalido. Confira os numeros e tente novamente.")
+- Error messages are helpful - `src/i18n/pt.json:300-340` (validation messages in clear Portuguese)
 
 **Forms and Data Collection:**
 - Name field accommodates Brazilian names - `src/components/forms/NameInput.tsx:8` (single "Nome completo" field)
-- Address includes Complemento - `src/components/checkout/AddressForm.tsx:55` (visible complemento field)
+- Address includes Complemento - `src/components/checkout/AddressForm.tsx:55`
 - Phone field accepts Brazilian format - `src/components/forms/PhoneInput.tsx:22` (validates 11-digit mobile with DDD)
 
 **Social Login and Identity Verification:**
 - Facebook login available - `src/lib/auth/providers.ts:12`
 - Instagram login available - `src/lib/auth/providers.ts:18`
-- Social account signals surfaced - `src/components/profile/TrustBadge.tsx:30` (displays "Member since 2019 via Facebook")
+- Social account signals surfaced - `src/components/profile/TrustBadge.tsx:30`
 
 **Legal, Compliance, and LGPD:**
 - Privacy policy exists in Portuguese - `src/pages/privacy.tsx`
-- Privacy policy states data collection purposes - `src/pages/privacy.tsx:15-80` (lists each data type and purpose)
-- Data processing consent is explicit - `src/components/auth/SignupForm.tsx:72` (separate unchecked consent checkbox)
-- DPO contact listed - `src/pages/privacy.tsx:92` (encarregado email listed)
-- Consent revocation mechanism - `src/pages/account/settings.tsx:65` (marketing email toggle)
-- Return policy displayed - `src/pages/returns.tsx` (references "direito de arrependimento")
+- Privacy policy states data collection purposes - `src/pages/privacy.tsx:15-80`
+- Data processing consent is explicit - `src/components/auth/SignupForm.tsx:72`
+- DPO contact listed - `src/pages/privacy.tsx:92`
+- Consent revocation mechanism - `src/pages/account/settings.tsx:65`
+- Return policy displayed - `src/pages/returns.tsx`
 - Transparent pricing - no hidden fees added at checkout
-- Delivery timeframe commitments - `src/components/checkout/ShippingOptions.tsx:18` (shows estimated delivery dates)
+- Delivery timeframe commitments - `src/components/checkout/ShippingOptions.tsx:18`
 
 **Localization Infrastructure:**
 - pt-BR locale configured - `src/i18n/config.ts:3`
 - hreflang tag present - `src/app/layout.tsx:15`
-- Portuguese 404 page - `src/app/not-found.tsx` (content in Portuguese)
+- Portuguese 404 page - `src/app/not-found.tsx`
 
 **Social, Cultural, and Safety:**
-- Referral flow supports WhatsApp - `src/components/referral/ShareModal.tsx:25` (WhatsApp share button present)
+- Referral flow supports WhatsApp - `src/components/referral/ShareModal.tsx:25`
 
 **Identity Exposure:**
-- Profile photo optional - `src/models/User.ts:18` (avatar field nullable)
-- Block functionality exists - `src/components/reviews/ReviewCard.tsx:45` (block user option on reviews)
+- Profile photo optional - `src/models/User.ts:18`
+- Block functionality exists - `src/components/reviews/ReviewCard.tsx:45`
 
 **Low-Bandwidth Resilience:**
 - Image optimization - `next.config.mjs` (Next.js Image with automatic WebP)
 - No auto-playing video - no video elements with autoplay found
-- Responsive to 360px - `tailwind.config.js:14` (min breakpoint: 320px)
+- Responsive to 360px - `tailwind.config.js:14`
 - No auto-playing GIFs - no large GIF or Lottie files detected
 
 ---
 
 ## Not Applicable
 
-**Payments:**
 - Boleto expiration messaging - no boleto integration exists (see Warning #6)
 - Pix discount displayed - no Pix integration exists (see Critical #1)
 - Installments in pricing model - not a SaaS/subscription product
-
-**Communication and WhatsApp:**
 - WhatsApp link format - no WhatsApp link exists to validate (see Warning #5)
 - Platform leakage strategy - not a marketplace
-
-**Social, Cultural, and Safety:**
 - Promotional calendar - no promotional/holiday logic found in codebase
 - Southern Hemisphere seasonal awareness - no seasonal marketing content in codebase
 - Safe meetup features - not a marketplace
 - In-app payment promoted over cash - not a marketplace
-
-**Localization Infrastructure:**
 - Timezone handling for BRT - no date/time logic that requires timezone awareness found
-- Portuguese transactional emails - email templates not in codebase (likely handled by third-party service)
+- Portuguese transactional emails - email templates not in codebase
 - Portuguese loading and empty states - app uses skeleton loaders without text
-
-**Payment Gateway and Infrastructure:**
-- Local card acquirer support - using Stripe (see Critical #1 for gateway recommendation)
-- Mercado Pago integration - no payment gateway change yet
-- Anti-fraud integration - no payment gateway change yet
-- Chargeback handling - no payment gateway change yet
-
-**SMS and Verification:**
+- Local card acquirer support - using Stripe (see Critical #1)
 - SMS OTP for verification - no SMS integration found
-- SMS provider supports Brazil - no SMS integration found
-
-**Identity Exposure:**
-- Real name displayed publicly - no public user-facing profiles or community features
-
----
-
-## Low-Bandwidth Resilience Detail
-
-| Check | Result | Detail |
-|-------|--------|--------|
-| Image optimization | PASS | Next.js Image with automatic WebP, lazy loading |
-| No auto-playing video | PASS | No video elements with autoplay |
-| No auto-playing GIFs | PASS | No large GIF or Lottie files detected |
-| JavaScript bundle size | WARNING | Total initial JS: ~420KB gzipped. Exceeds 300KB target. Largest chunks: `vendors-react.js` (180KB), `analytics-bundle.js` (95KB) |
-| Third-party script bloat | WARNING | 6 third-party scripts on initial load: Google Analytics, Meta Pixel, Hotjar, Intercom, Sentry, Google Fonts. Exceeds 5 script threshold. |
-| CDN with Brazilian edge nodes | PASS | Vercel Edge Network (includes Sao Paulo PoP) |
-| Responsive to 360px | PASS | Smallest breakpoint: 320px |
-| Font loading strategy | WARNING | Google Fonts loaded via `<link>` with no `font-display` specified. Causes invisible text on slow connections. |
-| Offline handling | FAIL | No service worker or offline fallback detected |
-| Data-lite mode | FAIL | No `Save-Data` header handling or `prefers-reduced-data` query |
-| Core flow without JS | FAIL | Full client-side rendering. Browse and checkout require JS to render any content. |
-
-**Low-Bandwidth Score: 68/100**
-4 passing, 3 warnings, 3 fails (no CRITICAL weight applied, scored proportionally)
 
 ---
 
@@ -240,21 +195,21 @@ These items require human judgment and can't be fully verified from code alone:
 - [ ] Brand's Reclame Aqui page is actively monitored and has a good rating
 - [ ] Customer support team includes Portuguese-speaking agents on WhatsApp
 - [ ] Installment pricing model accounts for interest absorption costs
-- [ ] Portuguese copy reads naturally to a native Brazilian speaker (beyond the European PT issues flagged above)
+- [ ] Portuguese copy reads naturally to a native Brazilian speaker
 - [ ] Physical address in footer is a real, verifiable Brazilian address
 
 ---
 
 ## Additional Observations
 
-- **Signup flow asks for "Company Name" but not CNPJ.** For B2B sales in Brazil, CNPJ is the standard business identifier. Collecting it at signup signals legitimacy and also lets you issue nota fiscal to business customers. (`src/components/auth/SignupForm.tsx:34`)
+- **Signup flow asks for "Company Name" but not CNPJ.** For B2B sales in Brazil, CNPJ is the standard business identifier. (`src/components/auth/SignupForm.tsx:34`)
 
-- **Referral flow has WhatsApp sharing but it's buried.** The WhatsApp share button exists in `ShareModal.tsx` but it's the third option after email and "Copy Link." In Brazil, WhatsApp should be the first and most prominent sharing option. (`src/components/referral/ShareModal.tsx:25`)
+- **Referral flow has WhatsApp sharing but it's buried.** The WhatsApp share button exists but it's the third option after email and "Copy Link." In Brazil, WhatsApp should be the first and most prominent sharing option. (`src/components/referral/ShareModal.tsx:25`)
 
 - **Search bar placeholder says "Search products..." in English.** The i18n file has a Portuguese translation but the component has a hardcoded English fallback that appears briefly before hydration. (`src/components/search/SearchBar.tsx:12`)
 
-- **Order confirmation page doesn't mention nota fiscal.** After purchase, Brazilian customers expect to receive a nota fiscal (electronic invoice tied to their CPF). The confirmation page should either provide it or explain when it will be sent. The nota fiscal generation logic exists (`src/lib/checkout/invoice.ts`) but is not surfaced to the user. (`src/pages/order/confirmation.tsx`)
+- **Order confirmation page doesn't mention nota fiscal.** After purchase, Brazilian customers expect to receive a nota fiscal. The generation logic exists but is not surfaced to the user. (`src/pages/order/confirmation.tsx`)
 
-- **Contact form doesn't include phone number field.** The contact page form collects name, email, and message. Brazilian users will likely just close the form and look for a WhatsApp number instead. (`src/pages/contact.tsx:30`)
+- **Contact form doesn't include phone number field.** Brazilian users will likely just close the form and look for a WhatsApp number instead. (`src/pages/contact.tsx:30`)
 
-- **Stripe is the only payment gateway.** While Stripe technically supports some Brazilian payment methods, its Brazil support is limited compared to local gateways. Card decline rates through foreign acquirers are significantly higher. Consider migrating to Pagarme, Stone, or Mercado Pago for the Brazilian market. (`src/lib/payments/gateway.ts:23`)
+- **Stripe is the only payment gateway.** Card decline rates through foreign acquirers are significantly higher. Consider migrating to Pagarme, Stone, or Mercado Pago. (`src/lib/payments/gateway.ts:23`)

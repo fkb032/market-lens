@@ -1,18 +1,19 @@
 ---
 name: code-passport
-description: Audit a codebase for market-specific cultural, UX, and product considerations. Catches what Western-default design misses. Currently supports Brazil.
+description: Audit a codebase for market-specific cultural, UX, and product considerations. Catches what Western-default design misses.
 disable-model-invocation: false
 user-invocable: true
 ---
 
 # /code-passport - Market-Specific Product Audit
 
-Scan a codebase for cultural, UX, and product issues that break or underperform in a specific market. Goes beyond localization into payments, trust, identity, communication patterns, forms, compliance, and social dynamics.
+Scan a codebase for cultural, UX, and product issues that break or underperform in specific markets. Goes beyond localization into payments, trust, identity, communication patterns, forms, compliance, and social dynamics.
 
 ## Quick Start
 
 ```
-/code-passport <market>
+/code-passport           # Audit against ALL supported markets
+/code-passport brazil    # Audit against a single market
 ```
 
 Then provide:
@@ -21,7 +22,7 @@ Then provide:
 
 I'll scan the codebase and produce a scored report with specific findings, file locations, and fix recommendations.
 
-**Output:** `outputs/code-passport/audit-<market>-[date].md`
+**Output:** `outputs/code-passport/audit-[date].md` (all markets) or `outputs/code-passport/audit-<market>-[date].md` (single market)
 
 **Supported markets:** Brazil
 
@@ -35,7 +36,13 @@ The audit reads your actual codebase: templates, components, payment integration
 
 ## Audit Process
 
-### Step 1: Codebase Discovery
+### Step 1: Determine Scope
+
+**If no market is specified:** Run against all supported markets. Load every `.md` file from `markets/` and run each market's checklist. Produce a combined report with per-market sections and an overall score.
+
+**If a market is specified:** Run against that single market. If the requested market doesn't have a checklist file, inform the user and list the available markets by checking which `.md` files exist in `markets/`.
+
+### Step 2: Codebase Discovery
 
 When invoked, immediately scan the project to understand the stack:
 
@@ -59,29 +66,27 @@ When invoked, immediately scan the project to understand the stack:
 - `**/*footer*`, `**/*header*`, `**/*layout*` for layout
 - `**/*.css`, `**/*.scss`, `**/*.tailwind*` for styling
 
-### Step 2: Load Market Checklist
+### Step 3: Load Market Checklist(s)
 
-Read the market checklist file from `markets/<market>.md` in this repository. The checklist contains all audit categories, checks, severity levels, and scan patterns specific to that market.
+Read the market checklist file(s) from `markets/` in this repository. Each checklist contains all audit categories, checks, severity levels, and scan patterns specific to that market.
 
-**Repository location:** The `markets/` directory is at the root of the Code Passport repository. Each file follows a consistent structure with categories, check tables (Check | How to Verify | Severity), and scan patterns.
+**Repository location:** The `markets/` directory is at the root of the Code Passport repository. Each file follows a consistent structure with categories, audit checklists, and contextual knowledge.
 
-If the requested market doesn't have a checklist file, inform the user and list the available markets by checking which `.md` files exist in `markets/`.
+### Step 4: Run Market Audit(s)
 
-### Step 3: Run Market Audit
-
-Execute each check category from the loaded market checklist. For every finding, record:
+Execute each check category from the loaded market checklist(s). For every finding, record:
 - **What was checked**
 - **Result** (PASS, FAIL, WARNING, or NOT APPLICABLE)
 - **File path and line number** (when a specific file is relevant)
 - **What to fix** (specific recommendation)
 
-Use the "How to scan" sections in each category as guidance for what to grep and read.
+Use the "Audit checklist" items in each category as the checks to verify. Use the surrounding narrative knowledge to understand context and make judgment calls.
 
 ---
 
-## Step 4: Generate Report
+## Step 5: Generate Report
 
-After scanning all categories, produce the report in this format:
+### Single market report
 
 ```markdown
 # Code Passport: <Market> Audit
@@ -98,10 +103,6 @@ After scanning all categories, produce the report in this format:
 **Passing:** [count]
 **Not applicable:** [count] (excluded from scoring)
 
-## Low-Bandwidth Score: [X]/100
-
-_(Include only if the market checklist has a Low-Bandwidth category)_
-
 ---
 
 ## Critical Issues (Must Fix)
@@ -111,9 +112,6 @@ _(Include only if the market checklist has a Low-Bandwidth category)_
 **File:** [file path]:[line number]
 **Finding:** [what's wrong]
 **Fix:** [specific recommendation]
-
-### 2. [Issue title]
-...
 
 ---
 
@@ -125,22 +123,17 @@ _(Include only if the market checklist has a Low-Bandwidth category)_
 **Finding:** [what's wrong]
 **Fix:** [specific recommendation]
 
-...
-
 ---
 
 ## Passing Checks
 
 - [check name] - [file where it was found]
-- [check name] - [file where it was found]
-...
 
 ---
 
 ## Not Applicable
 
-- [check name] - [reason: e.g., "no marketplace features detected"]
-...
+- [check name] - [reason]
 
 ---
 
@@ -148,15 +141,52 @@ _(Include only if the market checklist has a Low-Bandwidth category)_
 
 These items require human judgment and can't be fully verified from code alone:
 
-- [ ] [market-specific manual check items from the checklist]
+- [ ] [market-specific manual check items]
 
 ---
 
 ## Additional Observations
 
-_After completing the structured audit above, review the codebase one more time with fresh eyes. Look for anything market-specific that doesn't fit into the checklist categories but a PM who knows this market would flag. These are not scored. They are observations and suggestions._
+[Specific findings that don't fit into checklist categories but a PM who knows this market would flag. Reference file and line.]
+```
 
-[List observations here. These should be specific to what was actually found in this codebase, not generic advice. Reference the file and line where the observation applies.]
+### All-markets report
+
+When auditing against all markets, produce one combined report:
+
+```markdown
+# Code Passport: Full Audit
+**Project:** [project name]
+**Date:** [date]
+**Scanned:** [number] files across [number] directories
+**Markets audited:** [list of markets]
+
+---
+
+## Overall Score: [X]/100
+
+| Market | Score | Critical | Warnings | Passing |
+|--------|-------|----------|----------|---------|
+| Brazil | 52/100 | 3 | 11 | 38 |
+| [next] | ... | ... | ... | ... |
+
+---
+
+## [Market 1]
+
+[Full single-market report content for this market]
+
+---
+
+## [Market 2]
+
+[Full single-market report content for this market]
+
+---
+
+## Cross-Market Issues
+
+[Issues that appear across multiple markets — e.g., no cookie consent affects both Brazil (LGPD) and EU markets. Deduplicate and note which markets each issue impacts.]
 ```
 
 **Scoring:**
@@ -164,18 +194,19 @@ _After completing the structured audit above, review the codebase one more time 
 - Each CRITICAL failure: -15 points
 - Each WARNING failure: -5 points
 - Minimum score: 0
-- **Not Applicable checks are excluded entirely.** They don't count as passing or failing. The score is calculated only against checks that are relevant to this product.
+- **Not Applicable checks are excluded entirely.** They don't count as passing or failing.
+- Overall score is the average of all per-market scores
 - Scoring gives a rough sense of readiness, not a precise grade
 
 ---
 
-## Step 5: Output and Next Steps
+## Step 6: Output and Next Steps
 
-1. **Save report** to `outputs/code-passport/audit-<market>-[date].md`
+1. **Save report** to `outputs/code-passport/audit-[date].md` or `outputs/code-passport/audit-<market>-[date].md`
 
 2. **Display summary:**
 ```
-<Market> market audit complete.
+Market audit complete.
 
 Score: 34/100 (Not ready)
 
@@ -186,7 +217,7 @@ Top 3 fixes:
 2. [second most impactful]
 3. [third most impactful]
 
-Full report: outputs/code-passport/audit-<market>-[date].md
+Full report: outputs/code-passport/audit-[date].md
 ```
 
 3. **Offer next steps:**
@@ -198,18 +229,16 @@ Full report: outputs/code-passport/audit-<market>-[date].md
 
 ## Contextual Intelligence
 
-The audit adapts based on what kind of product it detects. Use the market checklist's contextual intelligence section (if present) to weight checks appropriately:
+The audit adapts based on what kind of product it detects. Weight checks appropriately:
 
 **E-commerce / marketplace:**
 - Payment checks weighted heavily
 - Trust signals critical
 - Safe meetup and safety checks apply (if C2C)
-- Social login as identity verification emphasized
 
 **SaaS / subscription:**
 - Pricing model and installment checks prioritized
 - Payment gateway compatibility important
-- Trust signals for business credibility
 
 **Content / media:**
 - Copy, tone, and localization primary focus
@@ -220,7 +249,6 @@ The audit adapts based on what kind of product it detects. Use the market checkl
 - Identity validation critical
 - Compliance weighted heavily
 - Trust signals essential
-- All payment checks apply
 
 ---
 
@@ -228,7 +256,7 @@ The audit adapts based on what kind of product it detects. Use the market checkl
 
 **Before this:**
 - `/prd-draft` - Define requirements for a new market launch
-- `/competitor-analysis` - Understand local competitors before auditing your own product
+- `/competitor-analysis` - Understand local competitors
 - `/journey-map` - Map the user journey for the target market
 
 **After this:**
@@ -242,10 +270,11 @@ The audit adapts based on what kind of product it detects. Use the market checkl
 
 Before delivering the audit, verify:
 
-- [ ] Every finding references a specific file path and line number (not "somewhere in the codebase")
+- [ ] Every finding references a specific file path and line number
 - [ ] CRITICAL vs WARNING severity is applied correctly per the market checklist
-- [ ] Recommendations are specific and actionable (file names, function names, not vague advice)
+- [ ] Recommendations are specific and actionable (file names, function names)
 - [ ] Product type was correctly detected and irrelevant checks marked as NOT APPLICABLE
 - [ ] Score reflects actual readiness
 - [ ] Manual review checklist only includes items that genuinely require human judgment
 - [ ] No generic advice that applies to every market (everything is market-specific)
+- [ ] Cross-market issues are deduplicated in all-markets mode
