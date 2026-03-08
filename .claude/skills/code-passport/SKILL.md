@@ -1,6 +1,6 @@
 ---
 name: code-passport
-description: Audit a codebase for market-specific cultural, UX, and product considerations. Catches what Western-default design misses.
+description: Audit a codebase for market-specific cultural, UX, and product considerations. Currently supports Arabic-speaking, Brazil.
 disable-model-invocation: false
 user-invocable: true
 ---
@@ -24,7 +24,7 @@ I'll scan the codebase and produce a scored report with specific findings, file 
 
 **Output:** `outputs/code-passport/audit-[date].md` (all markets) or `outputs/code-passport/audit-<market>-[date].md` (single market)
 
-**Supported markets:** Brazil
+**Supported markets:** Arabic-speaking, Brazil
 
 ---
 
