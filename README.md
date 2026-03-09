@@ -61,7 +61,7 @@ See [example-output.md](code-passport/skill/example-output.md) for a full sample
 
 Code Passport's value comes from practitioner knowledge — people who've shipped products in a specific market and know what breaks. If that's you, we want your expertise.
 
-To contribute market knowledge, clone this repo and run the `/contribute-codepassport` skill in Claude Code. It's a guided interview that walks you through what we need. You don't have to be an expert on everything — skip sections you're unsure about, and others can fill the gaps.
+To contribute market knowledge, clone this repo and run the `/contribute-codepassport` skill in Claude Code. It walks you through what we need. You don't have to be an expert on everything. Skip sections you're unsure about, and others can fill the gaps.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
 

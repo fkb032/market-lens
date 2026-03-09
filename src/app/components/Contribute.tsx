@@ -1,12 +1,28 @@
 import { motion } from "motion/react";
 import { Globe, BookOpen, Microscope } from "lucide-react";
+import { InstallBlock } from "./InstallBlock";
+
+const CONTRIBUTE_INSTALL_CMD = "npx skills add fkb032/code-passport/contribute-codepassport";
+const CONTRIBUTE_SKILL_URL = "https://raw.githubusercontent.com/fkb032/code-passport/main/skills/contribute-codepassport/SKILL.md";
+const CONTRIBUTE_FALLBACK = ""; // Will fetch from GitHub
+const CONTRIBUTE_PREVIEW_LINES = [
+  { divider: true },
+  { key: "name", value: "contribute-codepassport" },
+  { key: "description", value: "Contribute market knowledge to" },
+  { indent: true, text: "Code Passport via a guided walkthrough." },
+  { key: "user-invocable", value: "true" },
+  { divider: true },
+  { heading: true, text: "# /contribute-codepassport - Market Knowledge Contribution" },
+  { text: "Share your market expertise through a guided" },
+  { text: "walkthrough covering payments, trust, UX, and more..." },
+];
 
 const MODES = [
   {
     icon: <Globe className="w-5 h-5 text-indigo-500" />,
     title: "New market",
     description:
-      "Know a market well? Walk through all 8 sections — payments, trust, UX, and more — to create a new knowledge file from scratch.",
+      "Know a market well? Walk through all 8 sections (payments, trust, UX, and more) to create a new knowledge file from scratch.",
   },
   {
     icon: <BookOpen className="w-5 h-5 text-indigo-500" />,
@@ -75,25 +91,23 @@ export function Contribute() {
           ))}
         </div>
 
-        {/* How to contribute */}
+        {/* Install block */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto text-center"
+          className="flex flex-col items-center"
         >
-          <div className="bg-slate-900 rounded-xl p-5 font-mono text-sm text-slate-300 border border-slate-800 shadow-inner text-left">
-            <div className="flex items-center gap-3">
-              <span className="text-indigo-500 select-none">$</span>
-              <code className="flex-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
-                /contribute-codepassport
-              </code>
-            </div>
-          </div>
-          <p className="text-sm text-slate-500 mt-4 leading-relaxed">
-            Run the skill in Claude Code to start a guided interview. You don't need to be an expert on everything
-            — skip sections and let others fill in the gaps.
+          <InstallBlock
+            installCmd={CONTRIBUTE_INSTALL_CMD}
+            skillUrl={CONTRIBUTE_SKILL_URL}
+            fallbackContent={CONTRIBUTE_FALLBACK}
+            fileLabel="Contribute skill file"
+            previewLines={CONTRIBUTE_PREVIEW_LINES}
+          />
+          <p className="text-sm text-slate-500 mt-6 leading-relaxed text-center max-w-lg">
+            You don't need to be an expert on everything. Skip sections and let others fill in the gaps.
           </p>
           <a
             href="https://github.com/fkb032/code-passport/blob/main/CONTRIBUTING.md"
