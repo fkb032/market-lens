@@ -1,152 +1,23 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Check, Copy, Download, Sparkles, Stamp, TerminalSquare } from "lucide-react";
+import { Stamp } from "lucide-react";
 import { SKILL_MD_CONTENT } from "../data/skill-content";
+import { InstallBlock } from "./InstallBlock";
 
-const INSTALL_CMD = `npx skills add fkb032/code-passport`;
-const SKILL_URL = "https://raw.githubusercontent.com/fkb032/code-passport/main/SKILL.md";
-
-async function fetchSkillContent(): Promise<string> {
-  try {
-    const r = await fetch(SKILL_URL);
-    if (!r.ok) throw new Error("not found");
-    return await r.text();
-  } catch {
-    return SKILL_MD_CONTENT;
-  }
-}
-
-function InstallBlock() {
-  const [tab, setTab] = useState<"terminal" | "copy" | "download">("terminal");
-  const [copied, setCopied] = useState(false);
-
-  function handleCopy(text: string) {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  return (
-    <div className="w-full max-w-2xl">
-      <div className="flex items-center gap-1 mb-2">
-        <button
-          onClick={() => setTab("terminal")}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-            tab === "terminal"
-              ? "bg-slate-800 text-white"
-              : "text-slate-400 hover:text-slate-600"
-          }`}
-        >
-          <TerminalSquare className="w-3.5 h-3.5" />
-          Terminal
-        </button>
-        <button
-          onClick={() => setTab("copy")}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-            tab === "copy"
-              ? "bg-slate-800 text-white"
-              : "text-slate-400 hover:text-slate-600"
-          }`}
-        >
-          <Copy className="w-3.5 h-3.5" />
-          Copy SKILL.md
-        </button>
-        <button
-          onClick={() => setTab("download")}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-            tab === "download"
-              ? "bg-slate-800 text-white"
-              : "text-slate-400 hover:text-slate-600"
-          }`}
-        >
-          <Download className="w-3.5 h-3.5" />
-          Download
-        </button>
-      </div>
-
-      {tab === "terminal" && (
-        <div>
-          <div
-            onClick={() => handleCopy(INSTALL_CMD)}
-            className="bg-slate-900 rounded-xl px-5 py-4 flex items-center gap-4 cursor-pointer border border-slate-800 hover:bg-slate-800 transition-colors group"
-          >
-            <span className="text-indigo-400 select-none font-mono text-sm">$</span>
-            <code className="flex-1 text-sm font-mono text-slate-300 overflow-x-auto whitespace-nowrap scrollbar-hide text-left">
-              npx skills add fkb032/code-passport
-            </code>
-            <span className="text-slate-500 group-hover:text-slate-300 transition-colors shrink-0">
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-            </span>
-          </div>
-          <p className="text-[11px] text-slate-400 mt-2 text-left">
-            Works with Claude Code, Codex, Gemini CLI, Cursor, and more.
-          </p>
-        </div>
-      )}
-
-      {tab === "copy" && (
-        <div>
-          <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-            <div className="px-5 py-3 border-b border-slate-800 flex items-center justify-between">
-              <span className="text-xs font-mono text-slate-500">SKILL.md</span>
-              <button
-                onClick={() => fetchSkillContent().then((text) => handleCopy(text))}
-                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                {copied ? "Copied!" : "Copy contents"}
-              </button>
-            </div>
-            <div className="px-5 py-4 font-mono text-[13px] text-slate-400 leading-relaxed text-left max-h-[160px] overflow-y-auto scrollbar-hide">
-              <div className="text-slate-600">---</div>
-              <div><span className="text-indigo-400">name</span>: code-passport</div>
-              <div><span className="text-indigo-400">description</span>: Audit a codebase for market-specific</div>
-              <div className="pl-4">cultural, UX, and product considerations.</div>
-              <div><span className="text-indigo-400">user-invocable</span>: true</div>
-              <div className="text-slate-600">---</div>
-              <div className="mt-2 text-slate-300"># /code-passport - Market-Specific Product Audit</div>
-              <div className="mt-1">Scan a codebase for cultural, UX, and product</div>
-              <div>issues that break or underperform in a specific</div>
-              <div>market...</div>
-            </div>
-          </div>
-          <p className="text-[11px] text-slate-400 mt-2 text-left">
-            Save to your project's skills directory. No Node.js required.
-          </p>
-        </div>
-      )}
-
-      {tab === "download" && (
-        <div>
-          <button
-            onClick={() => {
-              fetchSkillContent().then((text) => {
-                const blob = new Blob([text], { type: "text/markdown" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "SKILL.md";
-                a.click();
-                URL.revokeObjectURL(url);
-              });
-            }}
-            className="w-full bg-slate-900 rounded-xl px-5 py-4 flex items-center gap-4 border border-slate-800 hover:bg-slate-800 transition-colors group cursor-pointer"
-          >
-            <Download className="w-5 h-5 text-indigo-400" />
-            <div className="flex-1 text-left">
-              <div className="text-sm font-medium text-slate-200">SKILL.md</div>
-              <div className="text-xs text-slate-500">Code Passport skill file</div>
-            </div>
-            <span className="text-xs text-slate-500 group-hover:text-slate-300 transition-colors">Download</span>
-          </button>
-          <p className="text-[11px] text-slate-400 mt-2 text-left">
-            Save to your project's skills directory. No Node.js required.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
+const AUDIT_INSTALL_CMD = "npx skills add fkb032/code-passport";
+const AUDIT_SKILL_URL = "https://raw.githubusercontent.com/fkb032/code-passport/main/skills/code-passport/SKILL.md";
+const AUDIT_PREVIEW_LINES = [
+  { divider: true },
+  { key: "name", value: "code-passport" },
+  { key: "description", value: "Audit a codebase for market-specific" },
+  { indent: true, text: "cultural, UX, and product considerations." },
+  { key: "user-invocable", value: "true" },
+  { divider: true },
+  { heading: true, text: "# /code-passport - Market-Specific Product Audit" },
+  { text: "Scan a codebase for cultural, UX, and product" },
+  { text: "issues that break or underperform in a specific" },
+  { text: "market..." },
+];
 
 type CountryKey = "brazil" | "japan" | "india" | "arabic";
 
@@ -315,7 +186,12 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-10 flex flex-col items-center"
         >
-          <InstallBlock />
+          <InstallBlock
+            installCmd={AUDIT_INSTALL_CMD}
+            skillUrl={AUDIT_SKILL_URL}
+            fallbackContent={SKILL_MD_CONTENT}
+            previewLines={AUDIT_PREVIEW_LINES}
+          />
         </motion.div>
 
         {/* The "Passport" UI Dashboard Mockup */}
